@@ -1,19 +1,23 @@
-let arrID = ["btnZero", "btnOne", "btnTwo", "btnThree", "btnFour", "btnFive", "btnSix", "btnSeven", "btnEight", "btnNine", "btnPoint", "btnEnter", "btnAdd", "btnSub", "btnMult", "btnDiv", "btnReset", "temp", "keyboard"]
+let arrayID = ["btnZero", "btnOne", "btnTwo", "btnThree", "btnFour", "btnFive", "btnSix", "btnSeven", "btnEight", "btnNine", "btnPoint", "btnEnter", "btnAdd", "btnSub", "btnMult", "btnDiv", "btnReset", "temp", "keyboard"]
 
-arrID.forEach(element => {
+arrayID.forEach(element => {
     eval(`var ${element} = document.getElementById(${element})`)
 })
 
-keyboard.value = ""
-temp.value = ""
+// btnOne.addEventListener('click', e => simulateKeyPress(btnOne))      A voir plus tard
+
 reset()
 keyboard.focus()
+temp.value = ""
+let point = false
 
 
 keyboard.addEventListener('keydown', e => {
 
     switch(e.keyCode){
 
+
+        //   ***********   Les chiffres de 0 à 9, et le point virgule **********
         case 96 :
             simulateKeyPress(btnZero)
             break
@@ -47,49 +51,48 @@ keyboard.addEventListener('keydown', e => {
         case 110 :
             simulateKeyPress(btnPoint)
             break
+
+        // ********   Les différents Opérateurs (+, -, *, /)   ***********
         case 107 :
             simulateKeyPress(btnAdd)
             e.preventDefault()
-            if(temp.value === ""){
-                temp.value = keyboard.value += " + "
-            }
+            addOperator(e.key)
             reset()
             break
         case 109 :
             simulateKeyPress(btnSub)
             e.preventDefault()
-            if(temp.value === ""){
-                temp.value = keyboard.value += " - "
-            }
+            addOperator(e.key)
             reset()
             break
         case 106 :
             simulateKeyPress(btnMult)
             e.preventDefault()
-            if(temp.value === ""){
-                temp.value = keyboard.value += " x "
-            }
+            addOperator(e.key)
             reset()
             break
         case 111 :
             simulateKeyPress(btnDiv)
             e.preventDefault()
-            if(temp.value === ""){
-                temp.value = keyboard.value += " / "
-            }
+            addOperator(e.key)
             reset()
             break
+
+        // Touche "Entrer" pour calculer le total de l'opération
         case 13 :
+
             simulateKeyPress(btnEnter)
             temp.value += keyboard.value
-            let total = temp.value.split(" ")
-            total[0] = parseInt(total[0])
-            total[2] = parseInt(total[2])
-            totalCalcul(total)
+            totalCalcul(temp.value)
+
             break
+
         case 8 :
             simulateKeyPress(btnBackspace)
             break
+
+
+        // Touche "²" pour RESET la calculatrice
         case 222 :
             simulateKeyPress(btnReset)
             e.preventDefault()
@@ -109,28 +112,39 @@ function reset(){
     keyboard.placeholder = 0
 }
 
-function totalCalcul(total){
-
-    if(total[1] === "+"){
-        keyboard.value = total[0] + total[2]
-        temp.placeholder = temp.value
-        temp.value = ""
-    }else if(total[1] === "-"){
-        keyboard.value = total[0] - total[2]
-        temp.placeholder = temp.value
-        temp.value = ""
-    }else if(total[1] === "x"){
-        keyboard.value = total[0] * total[2]
-        temp.placeholder = temp.value
-        temp.value = ""
-    }else if(total[1] === "/"){
-        keyboard.value = total[0] / total[2]
-        temp.placeholder = temp.value
-        temp.value = ""
-    }
-}
-
 function simulateKeyPress(selectID){
     selectID.style.backgroundColor = "blue"
     setTimeout(() => selectID.style.backgroundColor = "", 100)
+}
+
+function addOperator(operator){
+    if(temp.value === ""){
+        temp.value = keyboard.value += ` ${operator} `
+        console.log(operator)
+    }
+}
+
+function totalCalcul(calcul){
+
+    // ****   Pour les fainéants !   ****
+    // keyboard.value = eval(calcul)
+    // temp.placeholder = calcul
+    // temp.value = ""
+
+    total = calcul.split(" ")
+    total[0] = parseFloat(total[0])
+    total[2] = parseFloat(total[2])
+
+    if(total[1] === "+"){
+        keyboard.value = total[0] + total[2]
+    }else if(total[1] === "-"){
+        keyboard.value = total[0] - total[2]
+    }else if(total[1] === "*"){
+        keyboard.value = total[0] * total[2]
+    }else if(total[1] === "/"){
+        keyboard.value = total[0] / total[2]
+    }
+
+    temp.placeholder = temp.value
+    temp.value = ""
 }
