@@ -1,83 +1,97 @@
-let init = false
+let arrID = ["btnZero", "btnOne", "btnTwo", "btnThree", "btnFour", "btnFive", "btnSix", "btnSeven", "btnEight", "btnNine", "btnPoint", "btnEnter", "btnAdd", "btnSub", "btnMult", "btnDiv", "btnReset", "temp", "keyboard"]
 
-if(!init){
-    initCalculat()
-}
+arrID.forEach(element => {
+    eval(`var ${element} = document.getElementById(${element})`)
+})
+
+keyboard.value = ""
+temp.value = ""
+reset()
+keyboard.focus()
 
 
 keyboard.addEventListener('keydown', e => {
 
-    // console.log(e)
-
-    // console.log(keyboard.value)
-
     switch(e.keyCode){
 
         case 96 :
-            console.log(e.key)
+            simulateKeyPress(btnZero)
             break
         case 97 :
-            console.log(e.key)
+            simulateKeyPress(btnOne)
             break
         case 98 :
-            console.log(e.key)
+            simulateKeyPress(btnTwo)
             break
         case 99 :
-            console.log(e.key)
+            simulateKeyPress(btnThree)
             break
         case 100 :
-            console.log(e.key)
+            simulateKeyPress(btnFour)
             break
         case 101 :
-            console.log(e.key)
+            simulateKeyPress(btnFive)
             break
         case 102 :
-            console.log(e.key)
+            simulateKeyPress(btnSix)
             break
         case 103 :
-            console.log(e.key)
+            simulateKeyPress(btnSeven)
             break
         case 104 :
-            console.log(e.key)
+            simulateKeyPress(btnEight)
             break
         case 105 :
-            console.log(e.key)
+            simulateKeyPress(btnNine)
             break
         case 110 :
-            console.log(e.key)
+            simulateKeyPress(btnPoint)
             break
         case 107 :
+            simulateKeyPress(btnAdd)
             e.preventDefault()
-            console.log(keyboard.value)
+            if(temp.value === ""){
+                temp.value = keyboard.value += " + "
+            }
             reset()
             break
         case 109 :
+            simulateKeyPress(btnSub)
             e.preventDefault()
-            console.log(keyboard.value)
+            if(temp.value === ""){
+                temp.value = keyboard.value += " - "
+            }
             reset()
             break
         case 106 :
+            simulateKeyPress(btnMult)
             e.preventDefault()
-            console.log(keyboard.value)
+            if(temp.value === ""){
+                temp.value = keyboard.value += " x "
+            }
             reset()
             break
         case 111 :
+            simulateKeyPress(btnDiv)
             e.preventDefault()
-            console.log(keyboard.value)
-            reset()
-            break
-        case 192 :
-            e.preventDefault()
-            console.log(keyboard.value)
+            if(temp.value === ""){
+                temp.value = keyboard.value += " / "
+            }
             reset()
             break
         case 13 :
-            console.log(e.key)
+            simulateKeyPress(btnEnter)
+            temp.value += keyboard.value
+            let total = temp.value.split(" ")
+            total[0] = parseInt(total[0])
+            total[2] = parseInt(total[2])
+            totalCalcul(total)
             break
         case 8 :
-            console.log(e.key)
+            simulateKeyPress(btnBackspace)
             break
         case 222 :
+            simulateKeyPress(btnReset)
             e.preventDefault()
             reset()
             break
@@ -88,15 +102,35 @@ keyboard.addEventListener('keydown', e => {
 
 })
 
-function initCalculat(){
-    init = true
-    let keyboard = document.getElementById("keyboard")
-    keyboard.value = ""
-    reset()
-    keyboard.focus()
-}
+
 
 function reset(){
     keyboard.value = ""
     keyboard.placeholder = 0
+}
+
+function totalCalcul(total){
+
+    if(total[1] === "+"){
+        keyboard.value = total[0] + total[2]
+        temp.placeholder = temp.value
+        temp.value = ""
+    }else if(total[1] === "-"){
+        keyboard.value = total[0] - total[2]
+        temp.placeholder = temp.value
+        temp.value = ""
+    }else if(total[1] === "x"){
+        keyboard.value = total[0] * total[2]
+        temp.placeholder = temp.value
+        temp.value = ""
+    }else if(total[1] === "/"){
+        keyboard.value = total[0] / total[2]
+        temp.placeholder = temp.value
+        temp.value = ""
+    }
+}
+
+function simulateKeyPress(selectID){
+    selectID.style.backgroundColor = "blue"
+    setTimeout(() => selectID.style.backgroundColor = "", 100)
 }
