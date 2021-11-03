@@ -6,10 +6,11 @@ arrayID.forEach(element => {
 
 // btnOne.addEventListener('click', e => simulateKeyPress(btnOne))      A voir plus tard
 
+let point = false
 reset()
 keyboard.focus()
 temp.value = ""
-let point = false
+
 
 
 keyboard.addEventListener('keydown', e => {
@@ -117,6 +118,7 @@ keyboard.addEventListener('keydown', e => {
 function reset(){
     keyboard.value = ""
     keyboard.placeholder = 0
+    point = false
 }
 
 function simulateKeyPress(selectID){
@@ -150,6 +152,7 @@ function totalCalcul(calcul){
         keyboard.value = total[0] / total[2]
     }
 
+    point = false
     temp.placeholder = temp.value
     temp.value = ""
 }
