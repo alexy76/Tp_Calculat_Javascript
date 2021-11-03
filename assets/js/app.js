@@ -17,7 +17,7 @@ keyboard.addEventListener('keydown', e => {
     switch(e.keyCode){
 
 
-        //   ***********   Les chiffres de 0 à 9, et le point virgule **********
+        //   ***********   Les chiffres de 0 à 9, et la virgule **********
         case 96 :
             simulateKeyPress(btnZero)
             break
@@ -50,7 +50,13 @@ keyboard.addEventListener('keydown', e => {
             break
         case 110 :
             simulateKeyPress(btnPoint)
+            if(point === true){
+                e.preventDefault()
+            }else{
+                point = true
+            }
             break
+
 
         // ********   Les différents Opérateurs (+, -, *, /)   ***********
         case 107 :
@@ -77,6 +83,7 @@ keyboard.addEventListener('keydown', e => {
             addOperator(e.key)
             reset()
             break
+
 
         // Touche "Entrer" pour calculer le total de l'opération
         case 13 :
@@ -120,7 +127,7 @@ function simulateKeyPress(selectID){
 function addOperator(operator){
     if(temp.value === ""){
         temp.value = keyboard.value += ` ${operator} `
-        console.log(operator)
+        point = false
     }
 }
 
@@ -128,8 +135,6 @@ function totalCalcul(calcul){
 
     // ****   Pour les fainéants !   ****
     // keyboard.value = eval(calcul)
-    // temp.placeholder = calcul
-    // temp.value = ""
 
     total = calcul.split(" ")
     total[0] = parseFloat(total[0])
