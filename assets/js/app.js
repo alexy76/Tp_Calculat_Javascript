@@ -133,7 +133,7 @@ function addOperator(operator){
 
     if(!Number.isNaN(Number.parseInt(keyboard.value)) || !Number.isNaN(Number.parseFloat(keyboard.value))){
         if(temp.value === ""){
-            keyboard.value.toString()
+            keyboard.value
             temp.value = keyboard.value += ` ${operator} `
             virgule = false
             reset()
