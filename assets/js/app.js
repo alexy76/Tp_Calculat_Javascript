@@ -6,7 +6,7 @@ arrayID.forEach(element => {
 
 // btnOne.addEventListener('click', e => simulateKeyPress(btnOne))      A voir plus tard
 
-let point = false
+let virgule = false
 reset()
 keyboard.focus()
 temp.value = ""
@@ -51,10 +51,10 @@ keyboard.addEventListener('keydown', e => {
             break
         case 110 :
             simulateKeyPress(btnPoint)
-            if(point === true){
+            if(virgule === true){
                 e.preventDefault()
             }else{
-                point = true
+                virgule = true
             }
             break
 
@@ -90,8 +90,10 @@ keyboard.addEventListener('keydown', e => {
         case 13 :
 
             simulateKeyPress(btnEnter)
-            temp.value += keyboard.value
-            totalCalcul(temp.value)
+            if(!Number.isNaN(Number.parseInt(keyboard.value)) || !Number.isNaN(Number.parseFloat(keyboard.value))){
+                temp.value += keyboard.value
+                totalCalcul(temp.value)
+            }
 
             break
 
@@ -109,6 +111,7 @@ keyboard.addEventListener('keydown', e => {
 
         default:
             e.preventDefault()
+            break
     }
 
 })
@@ -118,7 +121,7 @@ keyboard.addEventListener('keydown', e => {
 function reset(){
     keyboard.value = ""
     keyboard.placeholder = 0
-    point = false
+    virgule = false
 }
 
 function simulateKeyPress(selectID){
@@ -127,32 +130,46 @@ function simulateKeyPress(selectID){
 }
 
 function addOperator(operator){
-    if(temp.value === ""){
-        temp.value = keyboard.value += ` ${operator} `
-        point = false
-    }
+
+    if(!Number.isNaN(Number.parseInt(keyboard.value)) || !Number.isNaN(Number.parseFloat(keyboard.value))){
+        if(temp.value === ""){
+            keyboard.value.toString()
+            temp.value = keyboard.value += ` ${operator} `
+            virgule = false
+            reset()
+        }
+    } 
 }
 
 function totalCalcul(calcul){
 
-    // ****   Pour les fainéants !   ****
-    // keyboard.value = eval(calcul)
+    // keyboard.value = eval(calcul)   <---- non recommandé 
 
     total = calcul.split(" ")
     total[0] = parseFloat(total[0])
     total[2] = parseFloat(total[2])
 
-    if(total[1] === "+"){
-        keyboard.value = total[0] + total[2]
-    }else if(total[1] === "-"){
-        keyboard.value = total[0] - total[2]
-    }else if(total[1] === "*"){
-        keyboard.value = total[0] * total[2]
-    }else if(total[1] === "/"){
-        keyboard.value = total[0] / total[2]
+    switch(total[1]){
+
+        case '+' :
+            keyboard.value = total[0] + total[2]
+            break
+        case '-' :
+            keyboard.value = total[0] - total[2]
+            break
+        case '*' :
+            keyboard.value = total[0] * total[2]
+            break
+        case '/' :
+            keyboard.value = total[0] / total[2]
+            break
+        default:
+            
+            break
     }
 
-    point = false
+
+    virgule = false
     temp.placeholder = temp.value
     temp.value = ""
 }
